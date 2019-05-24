@@ -13,6 +13,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -20,21 +21,30 @@ import retrofit2.http.Part;
 public interface HeroesAPI {
 
     @GET("heroes")
-    Call<List<Heroes>> getHeroes();
+    Call<List<Heroes>> getHeroes(@Header("Cookie") String cookie);
+
 
     @POST("heroes")
-    Call<Void> addHero(@Body Heroes heroes);
+    Call<Void> addHero(@Header("Cookie") String cookie,@Body Heroes heroes);
 
     @FormUrlEncoded
     @POST("heroes")
-    Call<Void> addHero(@Field("name") String name,@Field("desc") String des, @Field("image") String filename) ;
+    Call<Void> addHero(@Header("Cookie") String cookie,@Field("name") String name,@Field("desc") String des, @Field("image") String filename) ;
 
     @Multipart
     @POST("upload")
-    Call<ImageResponse> uploadImage(@Part MultipartBody.Part img);
+    Call<ImageResponse> uploadImage(@Header("Cookie") String cookie,@Part MultipartBody.Part img);
 
     @FormUrlEncoded
     @POST("heroes")
-    Call<Void> addMapHero(@FieldMap Map<String, String> map);
+    Call<Void> addMapHero(@Header("Cookie") String cookie,@FieldMap Map<String, String> map);
+
+    @FormUrlEncoded
+    @POST("users/login")
+    Call<LoginSignupResponse> checkUser(@Field("username") String username,@Field("password") String password) ;
+
+    @FormUrlEncoded
+    @POST("users/login")
+    Call<LoginSignupResponse> registrationUser(@Field("username") String username,@Field("password") String password) ;
 
 }
